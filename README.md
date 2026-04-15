@@ -1,0 +1,50 @@
+# growt-trt-validator
+
+**Validate [TensorRT](https://developer.nvidia.com/tensorrt) engines against original ONNX models using Growt** — certify before you deploy.
+
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+
+> "trtexec builds fast. Growt certifies safe."
+
+## What is this?
+
+CLI tool that compares a TensorRT engine's outputs against the original ONNX model on calibration data. Reports SQNR, per-class coverage, and emits a JSON audit certificate.
+
+## Install
+
+```bash
+pip install growt-trt-validator
+```
+
+## Usage
+
+```bash
+# After building your TRT engine:
+trtexec --onnx=model.onnx --fp16 --saveEngine=model.engine
+
+# Validate with Growt:
+growt-validate-trt \
+  --onnx model.onnx \
+  --engine model.engine \
+  --data calibration.npz \
+  --api-key your-key \
+  --output certificate.json \
+  --fail-on-red-flag
+```
+
+## Certificate Output
+
+```json
+{
+  "diagnosis": "SAFE",
+  "sqnr_db": 22.1,
+  "coverage_pct": 0.973,
+  "onnx_sha256": "abc123...",
+  "trt_sha256": "def456...",
+  "signed_by": "growt://transferoracle.ai"
+}
+```
+
+## License
+
+[MPL-2.0](LICENSE)

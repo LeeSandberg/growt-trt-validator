@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "growt-trt-validator"
+version = "0.2.0"
+description = "Validate TensorRT engines against ONNX originals using Growt"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["growt-client>=0.2.0", "numpy>=1.24"]
+
+[project.optional-dependencies]
+onnx = ["onnxruntime>=1.16"]
+trt = ["tensorrt>=8.6"]
+
+[project.scripts]
+growt-validate-trt = "growt_trt.validate_trt:main"
+
+[tool.setuptools.packages.find]
+include = ["growt_trt*"]
